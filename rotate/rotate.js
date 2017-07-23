@@ -62,12 +62,7 @@ $(document).ready(function() {
 
     }
     rotate();
-
-    var angle = 0; // starting position (degrees)
-    var distance = 30; // distance of b from a
-    var speed = 60; // revolution speed in degrees per second
-    var rate = 10; // refresh rate in ms
-
+setInterval(rotate, 10);
     $("#grabThis").draggable({
         stop: function(event, ui) {
             rotate();
