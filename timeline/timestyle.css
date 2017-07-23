@@ -1,0 +1,32 @@
+#container{
+  width:800px;
+  height:100px;
+  margin-top: 100px;
+  margin-left: 50px;
+  /*background-color: blue;*/
+  border: 3px solid black;
+  border-radius: 10px;
+  overflow: scroll;
+  position: relative;
+}
+
+
+#line{
+  position: absolute;
+  height: 0px;
+  width: 8000px;
+  border: 1.5px solid black;
+  margin: 30px;
+  margin-left: 40px;
+}
+
+#start{
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  border-radius: 8px;
+  background-color: white;
+  border: 1.5px solid black;
+  margin-left: 40px;
+  margin-top: 24px;
+}
