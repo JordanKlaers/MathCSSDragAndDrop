@@ -1,0 +1,117 @@
+body{
+  margin: 0;
+  position: absolute;
+}
+.box{
+    width:100px;
+    height:100px;
+    background-color: black;
+    margin-left: 300px;
+}
+.theSVG{
+  position: absolute;
+  /*padding-top: 25px;*/
+  /*top:200px;*/
+  left:110px;
+  transition-timing-function: "ease":".25,.1,.25,1","linear":"0,0,1,1","ease-in":".42,0,1,1","ease-out":"0,0,.58,1","ease-in-out":".42,0,.58,1"
+}
+#point{
+position: absolute;
+height:1px;
+width:1px;
+border: 1px solid black;
+}
+
+
+
+#grabThis{
+  position: absolute;
+  height: 50px;
+  width: 75px;
+  border: 3px solid black;
+  border-radius: 50px;
+  text-align: center;
+  padding-top: 25px;
+  top:200px;
+  left:110px;
+  transition-timing-function: "ease":".25,.1,.25,1","linear":"0,0,1,1","ease-in":".42,0,1,1","ease-out":"0,0,.58,1","ease-in-out":".42,0,.58,1"
+}
+
+#container{
+  height:100vh;
+  width:100vw;
+  position: relative;
+}
+
+#dropZone{
+  display: inline-block;
+  position: relative;
+  height: 200px;
+  width: 200px;
+  border: 3px solid black;
+  border-radius: 100px;
+}
+
+#rightHere{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left:0;
+  right:0;
+  margin: auto;
+  height: 50px;
+  width: 50px;
+  border: 3px solid black;
+  border-radius: 25px;
+}
+
+#dropZoneTwo{
+  display: none;
+  display: inline-block;
+  position: relative;
+  height: 200px;
+  width: 200px;
+  border: 3px solid black;
+  border-radius: 100px;
+}
+
+#rightHereTwo{
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left:0;
+  right:0;
+  margin: auto;
+  height: 50px;
+  width: 50px;
+  border: 3px solid black;
+  border-radius: 25px;
+}
+
+
+.anime{
+  animation: 4s ease;
+}
+
+  #point{
+  position: absolute;
+  height:1px;
+  width:1px;
+  border: 1px solid black;
+}
+
+#point2{
+position: absolute;
+height:1px;
+width:1px;
+border: 1px solid black;
+}
+
+
+#point3{
+position: absolute;
+height:1px;
+width:1px;
+border: 1px solid black;
+}
