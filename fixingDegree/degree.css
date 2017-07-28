@@ -2,6 +2,15 @@ body{
   margin: 0;
   position: absolute;
 }
+.box{
+    width:100px;
+    height:100px;
+    background-color: black;
+    margin-left: 300px;
+}
+
+
+
 
 #grabThis{
   position: absolute;
@@ -13,6 +22,7 @@ body{
   padding-top: 25px;
   top:200px;
   left:110px;
+  transition-timing-function: "ease":".25,.1,.25,1","linear":"0,0,1,1","ease-in":".42,0,1,1","ease-out":"0,0,.58,1","ease-in-out":".42,0,.58,1"
 }
 
 #container{
@@ -44,6 +54,7 @@ body{
 }
 
 #dropZoneTwo{
+  display: none;
   display: inline-block;
   position: relative;
   height: 200px;
@@ -53,6 +64,7 @@ body{
 }
 
 #rightHereTwo{
+  display: none;
   position: absolute;
   top: 0;
   bottom: 0;

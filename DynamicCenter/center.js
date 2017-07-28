@@ -1,10 +1,11 @@
 $(document).ready(function() {
     $(document).on("click", function(event) {
-        console.log(event.pageX, event.pageY);
+        // console.log(event.pageX, event.pageY);
         let offset = $("#grabThis").offset()
-        console.log(offset);
+        // console.log(offset);
     })
-
+    step = 0;
+    degree = 0;
     theDegree = 0;
     grabThisCenter = {};
     dropZoneCenter = {};
@@ -23,25 +24,29 @@ $(document).ready(function() {
         var cSquared = distanceOBJ.x + distanceOBJ.y
         var hypotenus = Math.sqrt(cSquared) //pythagorean theroy to find the linear distance away
         // console.log(hypotenus, "distance");
-        var numberForSin = xDistance / hypotenus
-        theDegree = Math.asin(numberForSin) * (180 / Math.PI)
+        var radian = xDistance / hypotenus
+        theDegree = Math.asin(radian) * (180 / Math.PI)
+        console.log("the degree", theDegree);
         //  theDegree = (180-theDegree)+ 180;
         if (centers.grab.x < centers.drop.x && centers.grab.y > centers.drop.y) {
             theDegree = theDegree - 180
         } else if (centers.grab.x > centers.drop.x && centers.grab.y > centers.drop.y) {
-            theDegree = -Math.abs(theDegree) - 180;
+            theDegree = 180 - theDegree  ;
+            console.log("bottom right", theDegree);
         } else if (centers.grab.x > centers.drop.x && centers.grab.y < centers.drop.y) {
-          console.log("in bottom right");
+          // theDegree = 360 + Math.abs(theDegree);
             //bottom right
         } else if (centers.grab.x < centers.drop.x && centers.grab.y < centers.drop.y) {
             theDegree = -Math.abs(theDegree);
         }
 
         $('#grabThis').css({
-            WebkitTransform: 'rotate(' + theDegree + 'deg)'
+            WebkitTransform: 'rotate(' + theDegree + 'deg)' //could be plus 360
         });
         return theDegree
     }
+
+
 
     function getBothCenters() {
         let grabDimensions = document.getElementById("grabThis");
@@ -75,39 +80,36 @@ $(document).ready(function() {
     }
 
     rotate();
-    var interval = window.setInterval(rotate, 10);
+    // var interval = window.setInterval(rotate, 100);
 
 
     function point(top, left) {
         let centers = getBothCenters();
-
         $("#point").css({top: centers.drop.y, left: centers.drop.x})
         $("#point2").css({top: centers.grab.y, left: centers.grab.x})
         $("#point3").css({top: top, left: left})
     }
 
     function rotateUpright(){
-      console.log("callback rotate upright");
-      let offset = $("#grabThis").offset()
-      console.log(offset);
+      // console.log("callback rotate upright");
+      let offset = $("#grabThis").offset();
     }
 
 
     var grabbed = document.getElementById("grabThis")
     var box = grabbed.getBoundingClientRect()
-    console.log(box.top, " top ", box.left, " left ");
-    // console.log(box);
 
-point(box.top, box.left);
+
+
+    point(box.top, box.left);
 
     $("#grabThis").draggable({
         stop: function(event, ui) {
-            // point();
             window.clearInterval(interval)
-            // var degree = rotate();
-            // console.log(degree);/
-            let centers = getBothCenters()
+            let degree = rotate();
+            console.log(degree, "degree when dropped");
 
+            let centers = getBothCenters()
             var distanceOBJ = { //gets the x distance and y distance between what you dropped and where it should have landed
                 x: Math.abs(centers.drop.x - centers.grab.x),
                 y: Math.abs(centers.drop.y - centers.grab.y)
@@ -116,26 +118,49 @@ point(box.top, box.left);
             distanceOBJ.y *= distanceOBJ.y
             var cSquared = distanceOBJ.x + distanceOBJ.y
             var distance = Math.sqrt(cSquared) //pythagorean theroy to find the linear distance away
-            console.log(distance, "distance");
+            // console.log(distance, "distance");
+
+            // console.log(degree, "degree when dropped");
+
+
+
+            if (centers.grab.x < centers.drop.x && centers.grab.y > centers.drop.y) {
+                theDegree = theDegree - 180
+                console.log(" dropped bottom left");
+            } else if (centers.grab.x > centers.drop.x && centers.grab.y > centers.drop.y) {
+                // theDegree = 180 - Math.abs(theDegree);
+                console.log("dropped bottom right");
+                console.log(degree);
+            } else if (centers.grab.x > centers.drop.x && centers.grab.y < centers.drop.y) {
+                //do nothing
+                console.log(" dropped top left");
+            } else if (centers.grab.x < centers.drop.x && centers.grab.y < centers.drop.y) {
+                theDegree = -Math.abs(theDegree);
+                console.log(" dropped top right");
+            }
+
+
+
+
+
+
+
+
+
+
+
+
 
             if (distance < 100) {
                 $("#grabThis").parent().css({position: 'relative'})
-
                 var regOffset = $("#grabThis").offset();
-                console.log(centers);
-                console.log(centers.drop.y, centers.regularGrab.height, centers.drop.x, centers.regularGrab.width);
-
                 var top = centers.drop.y - centers.regularGrab.height/2//regOffset.top
                 var left = centers.drop.x - centers.regularGrab.width/2//regOffset.left
-                // top = top + centers.grabDimensions.height/2
-                // left = left + centers.grabDimensions.width/2
-
-                // left = Math.abs(left)
-                // console.log(centers);
                 console.log(top, left), "top left";
-                $('#grabThis').css({
-                    WebkitTransform: 'rotate(' + 0 + 'deg)'
-                });
+                // $('#grabThis').css({
+                //     WebkitTransform: 'rotate(' + 45 + 'deg)'
+                // });
+                buildRotate(theDegree);
                 $("#grabThis").animate({
                     top: top,                       //TODO the top left are different from the raw javascript get bounding box top and left so its not getting dropped correctly
                     left: left
@@ -145,5 +170,52 @@ point(box.top, box.left);
 
         }
     });
+
+    function buildRotate(degree){
+      var newDegree = 0;
+      var movement = [];
+      // console.log(degree,"step");
+
+      if(degree< 0 && degree > -180){
+        console.log("degree IS", degree);
+        step = (Math.abs(degree)+ 40)/100
+      }
+      // for(let i=1;i<101; i++){
+      //   newDegree = degree+ step*i;
+      //   movement.push(newDegree);
+      // }
+      startBobble(step, degree);
+
+      console.log(movement, "array for angles to move");
+    }
+
+    function startBobble(step, degree){
+      bobbleInterval = setInterval(function(){bobble(step, degree)}, 10)
+    }
+
+    globalDegree = 0;
+    setValueInitially = true;
+
+    function bobble(step, degree){
+
+
+
+
+      console.log("inside boble", globalDegree);
+      if(setValueInitially){
+        globalDegree = degree;
+      }
+      setValueInitially=false;
+      globalDegree = globalDegree + step
+          $('#grabThis').css({
+            WebkitTransform: 'rotate(' + globalDegree + 'deg)'
+          })
+
+        if(globalDegree<40 && globalDegree>35){
+          console.log("degree is less than 40");
+          clearInterval(bobbleInterval)
+          // bobble(degree, step);
+        }
+    }
 
 });

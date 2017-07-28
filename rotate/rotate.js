@@ -71,14 +71,19 @@ $(document).ready(function() {
         var numberForSin = xDistance / hypotenus
         theDegree = Math.asin(numberForSin) * (180 / Math.PI)
         //  theDegree = (180-theDegree)+ 180;
+        console.log("before the ifsssss");
         if (grabThisCenter.x < dropZoneCenter.x && grabThisCenter.y > dropZoneCenter.y) {
             theDegree = theDegree - 180
+            console.log(" dropped bottom left");
         } else if (grabThisCenter.x > dropZoneCenter.x && grabThisCenter.y > dropZoneCenter.y) {
-            theDegree = -Math.abs(theDegree) - 180;
+            // theDegree = 180 - Math.abs(theDegree);
+            console.log("dropped bottom right");
         } else if (grabThisCenter.x > dropZoneCenter.x && grabThisCenter.y < dropZoneCenter.y) {
             //do nothing
+            console.log(" dropped top left");
         } else if (grabThisCenter.x < dropZoneCenter.x && grabThisCenter.y < dropZoneCenter.y) {
             theDegree = -Math.abs(theDegree);
+            console.log(" dropped top right");
         }
 
         $('#grabThis').css({
