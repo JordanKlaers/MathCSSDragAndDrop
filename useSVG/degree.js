@@ -7,7 +7,7 @@ $(svg).css({})
   // console.log(huh);
   $("#rightHereTwo").append(snap)
   var svg = document.getElementsByTagName("svg");
-  $(svg).css({"transform-origin": "center bottom", "top":"200px",
+  $(svg).css({"transform-origin": "center bottom", "top":"0px",
   "left":"68px", "position": "absolute" })
   $(svg).draggable();
   $(svg).addClass("theSVG");
