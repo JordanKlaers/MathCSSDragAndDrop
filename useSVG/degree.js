@@ -24,7 +24,7 @@ $('#point').css({'top': testCenters.grab.y, 'left': testCenters.grab.x})
 
 
     rotate();
-    var interval = window.setInterval(rotate, 100);
+    var interval = window.setInterval(rotate, 10);
 
 
     step = 0;
@@ -53,7 +53,7 @@ $('#point').css({'top': testCenters.grab.y, 'left': testCenters.grab.x})
         $(svg).css({
             WebkitTransform: 'rotate(' + theDegree + 'deg)' //could be plus 360
         });
-        console.log(theDegree);
+        // console.log(theDegree);
         return theDegree
     }
 
@@ -105,6 +105,9 @@ $('#point').css({'top': testCenters.grab.y, 'left': testCenters.grab.x})
         return center;
     }
 
+
+
+
     function gotDistance() {
         let centers = getBothCenters()
         var distanceOBJ = { //gets the x distance and y distance between what you dropped and where it should have landed
@@ -117,6 +120,9 @@ $('#point').css({'top': testCenters.grab.y, 'left': testCenters.grab.x})
         var distance = Math.sqrt(cSquared) //pythagorean theroy to find the linear distance away
         return distance
     }
+
+
+
 
  var recoupLeft, recoupTop;
 
