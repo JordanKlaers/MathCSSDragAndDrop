@@ -181,9 +181,8 @@ $('#point').css({'top': testCenters.grab.y, 'left': testCenters.grab.x})
 
                 var regOffset = $(svg).offset();
                 var top = centers.drop.y - 96 //regOffset.top
-                    var left = centers.drop.x - 32  //regOffset.left
-                        console.log(top, left),
-                        "top left";
+                var left = centers.drop.x - 32  //regOffset.left
+                        console.log(top, left, "top left");
                         // $('svg').css({
                         //     WebkitTransform: 'rotate(' + 45 + 'deg)'
                         // });
@@ -197,8 +196,8 @@ $('#point').css({'top': testCenters.grab.y, 'left': testCenters.grab.x})
                             console.log("done floating");
                         })
 
-                        console.log(degree, "degree to lock");
-                        lock(degree);
+                        // console.log(degree, "degree to lock");
+                        // lock(degree);
 
                     }
                 }
