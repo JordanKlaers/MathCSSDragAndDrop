@@ -7,24 +7,20 @@ $(document).ready(function() {
     });
 
     var box = $('<div>')
-    $(box).css({'height': '200', 'width': '65', 'background-color': 'rgba(255, 0, 0, 0.0)', 'margin': '0'})
+    $(box).css({'height': '200', 'width': '65', 'background-color': 'rgba(255, 0, 0, 0.0)', 'margin': '0', 'top': '0'})
     $(box).addClass("box")
     $(box).attr({'id': 'parentBox'})
     $('#container').append(box)
+
     var snap = Snap(65, 100);
-    // var paper = snap();
     var path = snap.path("M100 10 C78 10 70 25 70 40 C70 70 100 55 100 100 C100 55 130 70 130 40 C130 25 122 10 100 10").attr({'stroke': 'black', 'stroke-width': "3", 'stroke-linejoin': "round", 'fill': 'white', "transform": "translateX(-68px)"});
-    // console.log(huh);
     var svg = document.getElementsByTagName("svg");
+
     $(box).append(svg)
-    // console.log(svg, box);
     $(svg).css({"transform-origin": "center bottom"})
-    // $(svg).draggable();
     $(svg).addClass("theSVG");
     $(svg).attr({"id": "svgID"})
-    // console.log($(svg).attr('id'));
-    // getGrabCenter();
-    $('#parentBox').css({'position': 'absolute'})
+    $('#parentBox').css({'position': 'absolute', 'top': '100'})
 
     function calculations() {
         let SVGCenter = getGrabCenter();
@@ -41,7 +37,10 @@ $(document).ready(function() {
         return draggableInformation;
     }
 
-    function rotate() {
+    function rotate(clone) {
+      if(clone){
+        // console.log(clone);
+      }
         draggableInformation = calculations();
         $(svg).css({"rotate": draggableInformation.degree})
     }
@@ -51,17 +50,25 @@ $(document).ready(function() {
 
 
     // var interval = window.setInterval(rotate, 10);
-    calculations();
-    rotate();
+    // calculations();
+    // rotate();
 
     var recoupLeft,
         recoupTop,
-        theInterval;
+        theInterval,
+        currentBalloonID;
+    var balloonCount = 0;
 
-    $(box).draggable({
-
+    $('.box').draggable({
+      helper: 'clone',
+      // appendTo: 'body',
         handle: svg,
         start: function(event, ui) {
+          balloonCount++;
+          $(ui.helper[0]).attr({'id': 'balloon'})
+          currentBalloonID = 'first'
+          theInterval = window.setInterval(function(){rotate($(ui.helper[0]))}, 10);
+
             var left = parseInt($(this).css('left'), 10);
             left = isNaN(left)
                 ? 0
@@ -72,13 +79,14 @@ $(document).ready(function() {
                 : top;
             recoupLeft = left - ui.position.left;
             recoupTop = top - ui.position.top;
-            theInterval = window.setInterval(rotate, 10);
         },
         drag: function(event, ui) {
             ui.position.left += recoupLeft;
             ui.position.top += recoupTop;
         },
         stop: function(event, ui) {
+
+          // console.log($(ui.helper[0]).offset());
             window.clearInterval(theInterval)
 
             let draggableInformation = calculations();
@@ -86,22 +94,52 @@ $(document).ready(function() {
             if (draggableInformation.closestDistance < 100) {
                 var top = draggableInformation.closestCenter.y //regOffset.top
                 var left = draggableInformation.closestCenter.x //regOffset.left
+                let currentBalloon = ui.helper
+                currentBalloon =  $(currentBalloon)[0]
+                let balloon = document.getElementById(currentBalloonID)
+                // let jqueryID = '"#'+currentBalloonID+'"'
+                // console.log(jqueryID);
+              // $("#first").transition({ rotate: `${-100}` + 'deg'}, 1200, 'cubic-bezier(0,.28,.64,1.6)');
 
-                $('#parentBox').animate({
-                    top: top - $('#parentBox').height() / 2, //TODO the top left are different from the raw javascript get bounding box top and left so its not getting dropped correctly
-                    left: (left - $('#parentBox').width() / 2)
-                }, function() {
-                    console.log("done floating");
-                    lock(draggableInformation.degree);
-                })
+
+
+                // $(currentBalloon)[0].animate({
+                //     top: top, //- $('#parentBox').height() / 2, //TODO the top left are different from the raw javascript get bounding box top and left so its not getting dropped correctly
+                //     left: left //- $('#parentBox').width() / 2)
+                // }, function() {
+                //     console.log("done floating");
+                //     lock(draggableInformation.degree);
+                //     // let newBalloon = $('#parentBox').clone(true, true)
+                //     // $("#rightHere").append(newBalloon)
+                //     //
+                // })
             }
         }
     });
 
 
+    $("body").droppable({
+        accept: ".box",
+    	drop: function (event, ui) {
+        let draggableInformation = calculations(); // called before the balloon is floated to center, to get its degree of rotation, to be used when bobbeling
+    		let clone = ui.helper.clone()
+        clone = clone[0]
+        $(clone).appendTo('body');
+        var top = draggableInformation.closestCenter.y
+        var left = draggableInformation.closestCenter.x
+        $(clone).animate({                                  // this is what makes it float to the center
+            top: top - $(clone).height()/2,
+            left: left - $(clone).width()/2
+        }, function() {
+            console.log("done floating", draggableInformation.degree);
+            lock(draggableInformation.degree, $(clone).children()[0]);
+        })
+        }
+    });
 
 
-    function lock(deg){
+
+    function lock(deg, svg){
       if(deg>0){
         $(svg).transition({ rotate: `${-10}` + 'deg'}, 1200, 'cubic-bezier(0,.28,.64,1.6)');
         $(svg).transition({ rotate: `${10}` + 'deg'}, 1000, 'cubic-bezier(0,0.15,.64,2)');
@@ -113,61 +151,11 @@ $(document).ready(function() {
         $(svg).transition({ rotate: `${0}` + 'deg'}, 1000, 'cubic-bezier(0,0,.64,2)');
       }
 
-      // console.log(degree);
     }
-    //        let draggableInformation = calcudraggableInformation.SVGCenter
-    //
-    //          if (draggableInformation.SVGCenter.x < draggableInformation.closestCenter.x && draggableInformation.SVGCenter.y > draggableInformation.closestCenter.y) {
-    //              theDegree = theDegree - 180
-    //              console.log(" dropped bottom left");
-    //          } else if (draggableInformation.SVGCenter.x > draggableInformation.closestCenter.x && draggableInformation.SVGCenter.y > draggableInformation.closestCenter.y) {
-    //              // theDegree = 180 - Math.abs(theDegree);
-    //              console.log("dropped bottom right");
-    //              console.log(degree);
-    //          } else if (draggableInformation.SVGCenter.x > draggableInformation.closestCenter.x && draggableInformation.SVGCenter.y < draggableInformation.closestCenter.y) {
-    //              //do nothing
-    //              console.log(" dropped top left");
-    //          } else if (draggableInformation.SVGCenter.x < draggableInformation.closestCenter.x && draggableInformation.SVGCenter.y < draggableInformation.closestCenter.y) {
-    //              theDegree = -Math.abs(theDegree);
-    //              console.log(" dropped top right");
-    //          }
-    //
-    //  if (distance < 150) {
-    //
-    //
-    //
-    //
-    //      $(svg).parent().css({position: 'relative'})
-    //
-    //      var regOffset = $(svg).offset();
-    //      var top = centers.drop.y - 96 //regOffset.top
-    //          var left = centers.drop.x - 32  //regOffset.left
-    //              console.log(top, left),
-    //              "top left";
-    //              // $('svg').css({
-    //              //     WebkitTransform: 'rotate(' + 45 + 'deg)'
-    //              // });
-    //              // buildRotate(theDegree);
-    //
-    //
-    //              $(svg).animate({
-    //                  top: top, //TODO the top left are different from the raw javascript get bounding box top and left so its not getting dropped correctly
-    //                  left: left
-    //              }, function() {
-    //                  console.log("done floating");
-    //              })
-    //
-    //              console.log(degree, "degree to lock");
-    //              lock(degree);
-    //
-    //          }
-    //  }
-    //  });
 
     function getGrabCenter() {
-        let grabDimensions = document.getElementById("parentBox");
+        let grabDimensions = document.getElementById(currentBalloonID);
         grabDimensions = grabDimensions.getBoundingClientRect()
-        // console.log(grabDimensions, "grabDimensions from getbothcenters()");
         var GrabCenter = { //get the height and width so you can move it up and over half those values to position the center
             x: grabDimensions.left + grabDimensions.width / 2,
             y: grabDimensions.top + grabDimensions.height / 2

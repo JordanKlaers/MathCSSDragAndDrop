@@ -1,6 +1,6 @@
 body{
   margin: 0;
-  position: absolute;
+  position: relative;
 }
 .box{
     width:100px;
