@@ -22,8 +22,9 @@ $(document).ready(function() {
     $(svg).attr({"id": "svgID"})
     $('#parentBox').css({'position': 'absolute', 'top': '100'})
 
-    function calculations() {
-        let SVGCenter = getGrabCenter();
+    function calculations(currentlyDraggedBalloon, currentID) {
+      console.log(currentID); // only here when the balloon is dropped
+        let SVGCenter = getGrabCenter(currentlyDraggedBalloon);
         let timelineCenters = getTimelineCenters();
         let theClosest = getClosest();
         let closestCenter = getCenterOfClosest();
@@ -37,21 +38,18 @@ $(document).ready(function() {
         return draggableInformation;
     }
 
-    function rotate(clone) {
+    function rotate(clone, currentBalloonID) {
+      console.log(clone);
       if(clone){
         // console.log(clone);
       }
-        draggableInformation = calculations();
-        $(svg).css({"rotate": draggableInformation.degree})
+        draggableInformation = calculations(clone, currentBalloonID);    // the rotate interval is called when the balloon drag start, (rotate gets all the info and does the rotate) so now the currently grabbed balloon is available for the calculations
+        let rotateBalloon = $(clone).children()[0]
+        // console.log(rotateBalloon);
+        $(rotateBalloon).css({"rotate": draggableInformation.degree})
     }
 
 
-
-
-
-    // var interval = window.setInterval(rotate, 10);
-    // calculations();
-    // rotate();
 
     var recoupLeft,
         recoupTop,
@@ -65,9 +63,12 @@ $(document).ready(function() {
         handle: svg,
         start: function(event, ui) {
           balloonCount++;
-          $(ui.helper[0]).attr({'id': 'balloon'})
-          currentBalloonID = 'first'
-          theInterval = window.setInterval(function(){rotate($(ui.helper[0]))}, 10);
+          $(ui.helper[0]).attr({'id': "balloon" + balloonCount})     //this will dynamically generate new id's
+
+          currentBalloonID =   $(ui.helper[0]).attr('id')            // this saves the current balloons ID
+          console.log(currentBalloonID);
+
+          theInterval = window.setInterval(function(){rotate($(ui.helper[0]),currentBalloonID)}, 10);
 
             var left = parseInt($(this).css('left'), 10);
             left = isNaN(left)
@@ -89,7 +90,7 @@ $(document).ready(function() {
           // console.log($(ui.helper[0]).offset());
             window.clearInterval(theInterval)
 
-            let draggableInformation = calculations();
+            let draggableInformation = calculations($(ui.helper[0]), currentBalloonID);
 
             if (draggableInformation.closestDistance < 100) {
                 var top = draggableInformation.closestCenter.y //regOffset.top
@@ -121,9 +122,9 @@ $(document).ready(function() {
     $("body").droppable({
         accept: ".box",
     	drop: function (event, ui) {
-        let draggableInformation = calculations(); // called before the balloon is floated to center, to get its degree of rotation, to be used when bobbeling
     		let clone = ui.helper.clone()
         clone = clone[0]
+        let draggableInformation = calculations(clone, currentBalloonID); // called before the balloon is floated to center, to get its degree of rotation, to be used when bobbeling
         $(clone).appendTo('body');
         var top = draggableInformation.closestCenter.y
         var left = draggableInformation.closestCenter.x
