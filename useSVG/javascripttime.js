@@ -11,7 +11,7 @@ $(document).ready(function(){
     var dynamicMargin = 40;
     for(let i=0; i<132; i++){
       var another = zero.clone(true);
-      another.attr({'id': `clone ${i}`})
+      another.attr({'id': `clone${i}`, 'class': 'timeLinePoints'})
       dynamicMargin +=60
       var css = another.css({
         'position': 'absolute',
@@ -21,12 +21,12 @@ $(document).ready(function(){
         'background-color': 'white',
         'border': '1.5px solid black',
         'margin-left': dynamicMargin,
-        'margin-top': '24px',
+        'margin-top': '144px',
         'z-index': 3
       })
       coordinates.push(another.offset())
       // console.log(css);
-      $("#container").append(another);
+      $("#timeContainer").append(another);
     }
     console.log(coordinates);
   }

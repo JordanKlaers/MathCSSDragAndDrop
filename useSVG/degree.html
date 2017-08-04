@@ -13,29 +13,45 @@
   integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
   crossorigin="anonymous"></script>
     <!-- <script type="text/javascript" src="degree.js"></script> -->
-    <script type="text/javascript" src="uniqueBalloons.js"></script>
+    <script type="text/javascript" src="javascripttime.js"></script>
+    <script type="text/javascript" src="colorpicker.js"></script>
     <script src="transitCSSJquery.js"></script>
       <!-- <script type="text/javascript" src="../jquery.custom/jquery-ui.js"></script> -->
     <link rel="stylesheet" href="degree.css" />
   </head>
   <body>
+    <div id="colorPicker">
+      <input type="range" min="0" max="360" step="1" id="slider"></input>
+    </div>
+
+    <div id="balloonDropZone">
+      <div id="timeContainer">
+        <div id="line">
+
+        </div>
+        <div id="start">
+
+        </div>
+      </div>
+    </div>
+
     <div id="container">
       <div id="grabThis" draggable="true">
         grab___this
       </div>
 
-      <div id="dropZone">
+      <div id="dropZone" class="drop">
         <div id="rightHere" class="time">
 
         </div>
       </div>
 
-      <div id="dropZoneTwo">
+      <div id="dropZoneTwo" class="drop">
         <div id="rightHereTwo" class="time">
 
         </div>
       </div>
-      <div id="dropZoneThree">
+      <div id="dropZoneThree" class="drop">
         <div id="rightHereThree" class="time">
 
         </div>

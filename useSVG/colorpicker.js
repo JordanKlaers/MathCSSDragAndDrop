@@ -6,11 +6,22 @@ $(document).ready(function() {
         console.log(y, x);
     });
 
+
+var slider = $("#slider")
+
+    $(slider).on('input', function(){
+      console.log(this.value);
+
+      console.log(path);
+path.attr({"fill": "red"})
+    })
+
+
     var box = $('<div>')
-    $(box).css({'height': '200', 'width': '65', 'background-color': 'rgba(255, 0, 0, 0.0)', 'margin': '0', 'top': '0'})
+    $(box).css({'height': '200', 'width': '65', 'background-color': 'rgba(255, 0, 0, 0.0)', 'top': '10px', 'position': 'absolute', 'z-index': '10'})
     $(box).addClass("box")
     $(box).attr({'id': 'parentBox'})
-    $('#container').append(box)
+    $('#colorPicker').append(box)
 
     var snap = Snap(65, 100);
     var path = snap.path("M100 10 C78 10 70 25 70 40 C70 70 100 55 100 100 C100 55 130 70 130 40 C130 25 122 10 100 10").attr({'stroke': 'black', 'stroke-width': "3", 'stroke-linejoin': "round", 'fill': 'white', "transform": "translateX(-68px)"});
@@ -20,7 +31,7 @@ $(document).ready(function() {
     $(svg).css({"transform-origin": "center bottom"})
     $(svg).addClass("theSVG");
     $(svg).attr({"id": "svgID"})
-    $('#parentBox').css({'position': 'absolute', 'top': '100'})
+
 
     function calculations(currentlyDraggedBalloon, currentID) {
       // only here when the balloon is dropped
@@ -59,6 +70,7 @@ $(document).ready(function() {
 
     $('.box').draggable({
       helper: 'clone',
+
       // appendTo: 'body',
         handle: svg,
         start: function(event, ui) {
@@ -85,7 +97,7 @@ $(document).ready(function() {
             ui.position.left += recoupLeft;
             ui.position.top += recoupTop;
 
-      
+
         },
         stop: function(event, ui) {
 
@@ -99,16 +111,17 @@ $(document).ready(function() {
 
 
 
-    $("body").droppable({
+    $("#timeContainer").droppable({
         accept: ".box",
+
     	drop: function (event, ui) {
-
-
-
+          // $(this).append(ui.helper.clone());
+console.log("dropped");
     		let clone = ui.helper.clone()
         clone = clone[0]
+        $(clone).css({position:"absolute", left:ui.offset.left-this.offsetLeft, top:ui.offset.top-this.offsetTop - 30});
         let draggableInformation = calculations(clone, currentBalloonID); // called before the balloon is floated to center, to get its degree of rotation, to be used when bobbeling
-        $(clone).appendTo('body');
+        $(clone).appendTo('#timeContainer');
         var top = draggableInformation.closestCenter.y
         var left = draggableInformation.closestCenter.x
         if (draggableInformation.closestDistance < 100) {
@@ -116,15 +129,17 @@ $(document).ready(function() {
             var left = draggableInformation.closestCenter.x //regOffset.left
 
             $(clone).animate({                                  // this is what makes it float to the center
-                top: top - $(clone).height()/2,
-                left: left - $(clone).width()/2
+                top: '54px',//top - $(clone).height()/2,
+                left: left - 134
             }, function() {
                 console.log("done floating", draggableInformation.degree);
                 lock(draggableInformation.degree, $(clone).children()[0]);
             })
         }
         else{
+          console.log("dropped too far");
           $(clone).remove();
+          //  event.preventDefault()
         }
       }
     });
@@ -154,10 +169,12 @@ $(document).ready(function() {
         // console.log(GrabCenter, "just grab center");
         return GrabCenter
     }
-
+    getTimelineCenters();
     function getTimelineCenters() {
         let timeCenters = [];
-        let dropDimensions = document.getElementsByClassName("time");
+        let dropDimensions = document.getElementsByClassName("timeLinePoints");
+        // console.log(dropDimensions[0]);
+
         for (let i = 0; i < dropDimensions.length; i++) {
             timelineTick = dropDimensions[i].getBoundingClientRect()
             let DropCenter = {
@@ -168,7 +185,41 @@ $(document).ready(function() {
             timeCenters.push(DropCenter)
         }
         // console.log(timeCenters);
+        // addPoints(timeCenters)
         return timeCenters
+    }
+
+    function addPoints(timeline){
+
+      for(let i=0; i<3; i++){
+        let element = document.getElementById(timeline[i].id)
+        let left =  element.getBoundingClientRect().left - 96
+        console.log(left);
+
+        let point = $("<div>")
+        $(point).css({'height':'0px','width':'0px', 'border': '2px solid black', 'position': 'absolute'})
+        $(point).css({"z-index": "3000", "top": '32px', "left": left})
+        point.appendTo("#timeContainer")
+      }
+
+        //
+        //
+        //   let firstPoint = $("#clone5")
+        //   // let offset = firstPoint[0].offset()
+        //   console.log(firstPoint[0].getBoundingClientRect());
+        //   let left = firstPoint[0].getBoundingClientRect().left -23
+        // let point = $("<div>")
+        // $(point).css({'height':'1px','width':'1px', 'border': '1px solid black', 'position': 'absolute'})
+        //
+        // point.css({"z-index": "3000", "top": '30px', "left": left})
+        // let element = document.getElementById(timeline[0].id)
+        //         // let cssClone = $(element).css()
+        // // console.log(cssClone);
+        // point.appendTo("#timeContainer")
+        //
+        // console.log($(point).css('visibility','hidden'));
+        // console.log( timeline[0].y, timeline[0].x );
+      // }
     }
 
     function getCenterOfClosest() {
@@ -177,9 +228,12 @@ $(document).ready(function() {
 
         let dropDimensions = document.getElementById(idOfClosest.id);
         dropDimensions = dropDimensions.getBoundingClientRect()
+        // console.log(dropDimensions);
+        let left = dropDimensions.left + 7
+        let top = dropDimensions.top + 7
         let DropCenterOnTimeline = {
-            x: dropDimensions.left + dropDimensions.width / 2,
-            y: dropDimensions.top + dropDimensions.height / 2
+            x: left,
+            y: top
         }
         //TODO need to return drop center to use to getting the angle to rotate by
         return DropCenterOnTimeline

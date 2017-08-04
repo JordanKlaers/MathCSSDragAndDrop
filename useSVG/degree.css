@@ -6,15 +6,93 @@ body{
     width:100px;
     height:100px;
     background-color: black;
-    margin-left: 300px;
+    /*margin-left: 300px;*/
 }
-.theSVG{
-  /*position: absolute;*/
-  /*padding-top: 25px;*/
-  /*top:0px;*/
-  /*left:110px;*/
-  transition-timing-function: "ease":".25,.1,.25,1","linear":"0,0,1,1","ease-in":".42,0,1,1","ease-out":"0,0,.58,1","ease-in-out":".42,0,.58,1"
+#timeContainer{
+  width:800px;
+  height:250px;
+  margin-top: 25px;
+  margin-left: 50px;
+  /*background-color: blue;*/
+  border: 3px solid black;
+  border-radius: 10px;
+  overflow: scroll;
+  position: relative;
 }
+#balloonDropZone{
+  padding:50px;
+  height: 200px;
+}
+
+#line{
+  position: absolute;
+  height: 0px;
+  width: 8000px;
+  border: 1.5px solid black;
+  margin: 30px;
+  margin-left: 40px;
+  margin-top: 150px;
+}
+
+#start{
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  border-radius: 8px;
+  background-color: white;
+  border: 1.5px solid black;
+  margin-left: 40px;
+  margin-top: 144px;
+}
+
+
+
+
+input[type=range] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 200px; /* Specific width is required for Firefox. */
+  height:20px;
+  /*background: transparent; /* Otherwise white in Chrome */*/
+  /*background-image: image('../YOBFy.png');*/
+  background: -webkit-gradient(linear, 0% 50%, 100% 50%, color-stop(0%, #ff3232), color-stop(10%, #ff9900), color-stop(17%, #ffff00), color-stop(20%, #ccff00), color-stop(30%, #32ff00), color-stop(40%, #00ff65), color-stop(50%, #00ffff), color-stop(60%, #0065ff), color-stop(70%, #3300ff), color-stop(81%, #cb00ff), color-stop(90%, #ff0098), color-stop(100%, #ff0004));
+  background: -moz-linear-gradient(left, #ff3232 0%, #ff9900 10%, #ffff00 17%, #ccff00 20%, #32ff00 30%, #00ff65 40%, #00ffff 50%, #0065ff 60%, #3300ff 70%, #cb00ff 81%, #ff0098 90%, #ff0004 100%);
+  background: -webkit-linear-gradient(left, #ff3232 0%, #ff9900 10%, #ffff00 17%, #ccff00 20%, #32ff00 30%, #00ff65 40%, #00ffff 50%, #0065ff 60%, #3300ff 70%, #cb00ff 81%, #ff0098 90%, #ff0004 100%);
+  background: linear-gradient(to right, #ff3232 0%, #ff9900 10%, #ffff00 17%, #ccff00 20%, #32ff00 30%, #00ff65 40%, #00ffff 50%, #0065ff 60%, #3300ff 70%, #cb00ff 81%, #ff0098 90%, #ff0004 100%);
+  border: 3px solid black;
+  border-radius: 5px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 20px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+  /*margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */*/
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+}
+
+
+
+
+
+
+
+
+#colorPicker{
+  height: 150px;
+  width: 300px;
+  position: relative;
+  background-color: gray;
+  border: 5px solid black;
+  border-radius: 15px;
+  margin-top: 30px;
+}
+
+
+
 #point{
 position: absolute;
 height:1px;
