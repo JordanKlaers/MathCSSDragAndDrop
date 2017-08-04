@@ -65,7 +65,7 @@ $(document).ready(function() {
         handle: svg,
         start: function(event, ui) {
           balloonCount++;
-          $(ui.helper[0]).attr({'id': 'first'})
+          $(ui.helper[0]).attr({'id': 'balloon'})
           currentBalloonID = 'first'
           theInterval = window.setInterval(function(){rotate($(ui.helper[0]))}, 10);
 
