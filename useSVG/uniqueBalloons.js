@@ -128,14 +128,22 @@ $(document).ready(function() {
         $(clone).appendTo('body');
         var top = draggableInformation.closestCenter.y
         var left = draggableInformation.closestCenter.x
-        $(clone).animate({                                  // this is what makes it float to the center
-            top: top - $(clone).height()/2,
-            left: left - $(clone).width()/2
-        }, function() {
-            console.log("done floating", draggableInformation.degree);
-            lock(draggableInformation.degree, $(clone).children()[0]);
-        })
+        if (draggableInformation.closestDistance < 100) {
+            var top = draggableInformation.closestCenter.y //regOffset.top
+            var left = draggableInformation.closestCenter.x //regOffset.left
+
+            $(clone).animate({                                  // this is what makes it float to the center
+                top: top - $(clone).height()/2,
+                left: left - $(clone).width()/2
+            }, function() {
+                console.log("done floating", draggableInformation.degree);
+                lock(draggableInformation.degree, $(clone).children()[0]);
+            })
         }
+        else{
+          $(clone).remove();
+        }
+      }
     });
 
 
