@@ -3,13 +3,13 @@ $(document).ready(function() {
     $('html').click(function(e) {
         var x = e.pageX - this.offsetLeft;
         var y = e.pageY - this.offsetTop;
-        
+
         console.log(y, x);
     });
 
 console.log("window", window);
     var box = $('<div>')
-    $(box).css({'height': '200', 'width': '65', 'background-color': 'rgba(255, 0, 0, 0.0)', 'top': '10px', 'position': 'absolute', 'z-index': '10'})
+    $(box).css({'height': '200', 'width': '65', 'background-color': 'rgba(255, 0, 0, 0.0)', 'top': '10px', "left": '50px', 'position': 'absolute', 'z-index': '10'})
     $(box).addClass("box")
     $(box).attr({'id': 'parentBox'})
     $('#colorPicker').append(box)
@@ -110,7 +110,7 @@ console.log("window", window);
 console.log("dropped");
     		let clone = ui.helper.clone()
         clone = clone[0]
-        $(clone).css({position:"absolute", left:ui.offset.left-this.offsetLeft, top:ui.offset.top-this.offsetTop - 30});
+        $(clone).css({position:"absolute", left:ui.offset.left-this.offsetLeft + $("#timeContainer").scrollLeft(), top:ui.offset.top-this.offsetTop});
         let draggableInformation = calculations(clone, currentBalloonID); // called before the balloon is floated to center, to get its degree of rotation, to be used when bobbeling
         $(clone).appendTo('#timeContainer');
         var top = draggableInformation.closestCenter.y
@@ -121,7 +121,7 @@ console.log("dropped");
 
             $(clone).animate({                                  // this is what makes it float to the center
                 top: '54px',//top - $(clone).height()/2,
-                left: left - 134
+                left: left - 134 + $("#timeContainer").scrollLeft()
             }, function() {
               var idOfClosest = getClosest();
               window.balloonDrop(currentBalloonID, idOfClosest.id.split('').pop());

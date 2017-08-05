@@ -30,6 +30,13 @@ $(document).ready(function(){
     }
     console.log(coordinates);
   }
+
   createTimeLine();
+
+
+  $('html').click(function(e) {
+    var scrollLeft = $("#timeContainer").scrollLeft()
+    console.log(scrollLeft);
+  });
 
 })

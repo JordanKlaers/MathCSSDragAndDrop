@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 window.pattern = [];
 
-
+  
 
   // var tinycolor = require("tinycolor2");
   var slider = $("#slider")
@@ -34,7 +34,7 @@ window.pattern = [];
           console.log(window.pattern);
         }
 
-        
+
       }
         // $(e.target).parent().parent()
 
