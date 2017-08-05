@@ -12,8 +12,8 @@ body{
   width:800px;
   height:250px;
   margin-top: 25px;
-  margin-left: 50px;
-  /*background-color: blue;*/
+  margin-left: 200px;   /*IF YOU MOVE THE MARGIN OF THE TIMEZONE OVER THEN YOU HAVE TO SUBTRACT THE SAME AMOUNT WHEN YOU POSITION THE DROPPED BALLOON*/
+  background-color: rgba(0,0,0,.2);
   border: 3px solid black;
   border-radius: 10px;
   overflow: scroll;
@@ -57,13 +57,14 @@ body{
 
 #timeMarks{
   position: absolute;
-  height: 12px;
+  height: 19px;
   width: 36px;
   border-radius: 8px;
   background-color: white;
   border: 1.5px solid black;
-  margin-left: 86px;
+  margin-left: 88px;
   margin-top: 180px;
+  text-align: center;
 }
 
 #slider{
@@ -115,7 +116,7 @@ input[type=range]::-webkit-slider-thumb {
   background-color: gray;
   border: 5px solid black;
   border-radius: 15px;
-  margin-top: 30px;
+  margin-top: 50px;
   margin-left: 30px;
 }
 

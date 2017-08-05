@@ -7,7 +7,7 @@ $(document).ready(function(){
 
   function createTimeLine() {
     var zero = $("#start");
-    coordinates.push(zero.offset())
+    // coordinates.push(zero.offset())
     var dynamicMargin = 40;
     for(let i=0; i<132; i++){
       var another = zero.clone(true);
@@ -24,11 +24,11 @@ $(document).ready(function(){
         'margin-top': '144px',
         'z-index': 3
       })
-      coordinates.push(another.offset())
+      // coordinates.push(another.offset())
       // console.log(css);
       $("#timeContainer").append(another);
     }
-    console.log(coordinates);
+    // console.log(coordinates);
   }
 
   createTimeLine();

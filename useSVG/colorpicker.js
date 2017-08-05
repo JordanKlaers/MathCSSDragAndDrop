@@ -64,9 +64,11 @@ console.log("window", window);
 
       // appendTo: 'body',
         handle: svg,
+        stack: ".box",
         start: function(event, ui) {
           balloonCount++;
           $(ui.helper[0]).attr({'id': "balloon" + balloonCount})     //this will dynamically generate new id's
+      
 
           currentBalloonID =   $(ui.helper[0]).attr('id')            // this saves the current balloons ID
           console.log(currentBalloonID);
@@ -121,7 +123,7 @@ console.log("dropped");
 
             $(clone).animate({                                  // this is what makes it float to the center
                 top: '54px',//top - $(clone).height()/2,
-                left: left - 134 + $("#timeContainer").scrollLeft()
+                left: left - 134 + $("#timeContainer").scrollLeft() - 150    //IF YOU MOVE THE MARGIN OF THE TIMEZONE OVER THEN YOU HAVE TO SUBTRACT THE SAME AMOUNT WHEN YOU POSITION THE DROPPED BALLOON
             }, function() {
               var idOfClosest = getClosest();
               window.balloonDrop(currentBalloonID, idOfClosest.id.split('').pop());
