@@ -44,7 +44,27 @@ body{
   margin-left: 40px;
   margin-top: 144px;
 }
+#startStyle{
+  position: absolute;
+  height: 36px;
+  width: 12px;
+  border-radius: 8px;
+  background-color: white;
+  border: 1.5px solid black;
+  margin-left: 40px;
+  margin-top: 132px;
+}
 
+#timeMarks{
+  position: absolute;
+  height: 12px;
+  width: 36px;
+  border-radius: 8px;
+  background-color: white;
+  border: 1.5px solid black;
+  margin-left: 86px;
+  margin-top: 180px;
+}
 
 
 

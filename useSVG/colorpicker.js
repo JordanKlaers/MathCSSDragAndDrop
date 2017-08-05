@@ -3,20 +3,11 @@ $(document).ready(function() {
     $('html').click(function(e) {
         var x = e.pageX - this.offsetLeft;
         var y = e.pageY - this.offsetTop;
+        
         console.log(y, x);
     });
 
-
-var slider = $("#slider")
-
-    $(slider).on('input', function(){
-      console.log(this.value);
-
-      console.log(path);
-path.attr({"fill": "red"})
-    })
-
-
+console.log("window", window);
     var box = $('<div>')
     $(box).css({'height': '200', 'width': '65', 'background-color': 'rgba(255, 0, 0, 0.0)', 'top': '10px', 'position': 'absolute', 'z-index': '10'})
     $(box).addClass("box")
@@ -24,7 +15,7 @@ path.attr({"fill": "red"})
     $('#colorPicker').append(box)
 
     var snap = Snap(65, 100);
-    var path = snap.path("M100 10 C78 10 70 25 70 40 C70 70 100 55 100 100 C100 55 130 70 130 40 C130 25 122 10 100 10").attr({'stroke': 'black', 'stroke-width': "3", 'stroke-linejoin': "round", 'fill': 'white', "transform": "translateX(-68px)"});
+    window.path = snap.path("M100 10 C78 10 70 25 70 40 C70 70 100 55 100 100 C100 55 130 70 130 40 C130 25 122 10 100 10").attr({'stroke': 'black', 'stroke-width': "3", 'stroke-linejoin': "round", 'fill': 'white', "transform": "translateX(-68px)"});
     var svg = document.getElementsByTagName("svg");
 
     $(box).append(svg)
@@ -132,6 +123,8 @@ console.log("dropped");
                 top: '54px',//top - $(clone).height()/2,
                 left: left - 134
             }, function() {
+              var idOfClosest = getClosest();
+              window.balloonDrop(currentBalloonID, idOfClosest.id.split('').pop());
                 console.log("done floating", draggableInformation.degree);
                 lock(draggableInformation.degree, $(clone).children()[0]);
             })
