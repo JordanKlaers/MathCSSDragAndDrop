@@ -4,12 +4,12 @@ $(document).ready(function() {
         var x = e.pageX - this.offsetLeft;
         var y = e.pageY - this.offsetTop;
 
-        console.log(y, x);
+        // console.log($(window).scrollLeft());
     });
 
-console.log("window", window);
+
     var box = $('<div>')
-    $(box).css({'height': '200', 'width': '65', 'background-color': 'rgba(255, 0, 0, 0.0)', 'top': '10px', "left": '50px', 'position': 'absolute', 'z-index': '10'})
+    $(box).css({'height': '200', 'width': '65', 'background-color': 'rgba(255, 0, 0, 0.0)', 'top': '100px', "left": '50px', 'position': 'absolute', 'z-index': '0'})
     $(box).addClass("box")
     $(box).attr({'id': 'parentBox'})
     $('#colorPicker').append(box)
@@ -22,6 +22,9 @@ console.log("window", window);
     $(svg).css({"transform-origin": "center bottom"})
     $(svg).addClass("theSVG");
     $(svg).attr({"id": "svgID"})
+
+
+
 
 
     function calculations(currentlyDraggedBalloon, currentID) {
@@ -43,11 +46,11 @@ console.log("window", window);
     function rotate(clone, currentBalloonID) {
 
       if(clone){
-        // console.log(clone);
+
       }
         draggableInformation = calculations(clone, currentBalloonID);    // the rotate interval is called when the balloon drag start, (rotate gets all the info and does the rotate) so now the currently grabbed balloon is available for the calculations
         let rotateBalloon = $(clone).children()[0]
-        // console.log(rotateBalloon);
+
         $(rotateBalloon).css({"rotate": draggableInformation.degree})
     }
 
@@ -68,10 +71,10 @@ console.log("window", window);
         start: function(event, ui) {
           balloonCount++;
           $(ui.helper[0]).attr({'id': "balloon" + balloonCount})     //this will dynamically generate new id's
-      
+
 
           currentBalloonID =   $(ui.helper[0]).attr('id')            // this saves the current balloons ID
-          console.log(currentBalloonID);
+
 
           theInterval = window.setInterval(function(){rotate($(ui.helper[0]),currentBalloonID)}, 10);
 
@@ -94,7 +97,7 @@ console.log("window", window);
         },
         stop: function(event, ui) {
 
-          // console.log($(ui.helper[0]).offset());
+
             window.clearInterval(theInterval)
 
             let draggableInformation = calculations($(ui.helper[0]), currentBalloonID);
@@ -109,10 +112,10 @@ console.log("window", window);
 
     	drop: function (event, ui) {
           // $(this).append(ui.helper.clone());
-console.log("dropped");
+
     		let clone = ui.helper.clone()
         clone = clone[0]
-        $(clone).css({position:"absolute", left:ui.offset.left-this.offsetLeft + $("#timeContainer").scrollLeft(), top:ui.offset.top-this.offsetTop});
+        $(clone).css({position:"absolute", left:ui.offset.left-this.offsetLeft + $("#timeContainer").scrollLeft() + $(window).scrollLeft(), top:ui.offset.top-this.offsetTop});
         let draggableInformation = calculations(clone, currentBalloonID); // called before the balloon is floated to center, to get its degree of rotation, to be used when bobbeling
         $(clone).appendTo('#timeContainer');
         var top = draggableInformation.closestCenter.y
@@ -123,16 +126,18 @@ console.log("dropped");
 
             $(clone).animate({                                  // this is what makes it float to the center
                 top: '54px',//top - $(clone).height()/2,
-                left: left - 134 + $("#timeContainer").scrollLeft() - 150    //IF YOU MOVE THE MARGIN OF THE TIMEZONE OVER THEN YOU HAVE TO SUBTRACT THE SAME AMOUNT WHEN YOU POSITION THE DROPPED BALLOON
+                left: left - 134 + $("#timeContainer").scrollLeft() + $(window).scrollLeft() - 150    //IF YOU MOVE THE MARGIN OF THE TIMEZONE OVER THEN YOU HAVE TO SUBTRACT THE SAME AMOUNT WHEN YOU POSITION THE DROPPED BALLOON
             }, function() {
-              var idOfClosest = getClosest();
+              var idOfClosest = getClosest();       //need to save the id(point on timeline) to the svg path so when you click on it it can be deleted
+              let path = $(clone).children()[0]       // the box is the element being cloned, its grandchild is the path
+              path = $(path).children()[2]
+              $(path).data({'timeIndex': idOfClosest.id.split('').pop()})      // adds the data to the path
               window.balloonDrop(currentBalloonID, idOfClosest.id.split('').pop());
-                console.log("done floating", draggableInformation.degree);
-                lock(draggableInformation.degree, $(clone).children()[0]);
+              lock(draggableInformation.degree, $(clone).children()[0]);
             })
         }
         else{
-          console.log("dropped too far");
+
           $(clone).remove();
           //  event.preventDefault()
         }
@@ -161,14 +166,14 @@ console.log("dropped");
             x: grabDimensions.left + grabDimensions.width / 2,
             y: grabDimensions.top + grabDimensions.height / 2
         }
-        // console.log(GrabCenter, "just grab center");
+
         return GrabCenter
     }
     getTimelineCenters();
     function getTimelineCenters() {
         let timeCenters = [];
         let dropDimensions = document.getElementsByClassName("timeLinePoints");
-        // console.log(dropDimensions[0]);
+
 
         for (let i = 0; i < dropDimensions.length; i++) {
             timelineTick = dropDimensions[i].getBoundingClientRect()
@@ -179,8 +184,6 @@ console.log("dropped");
             }
             timeCenters.push(DropCenter)
         }
-        // console.log(timeCenters);
-        // addPoints(timeCenters)
         return timeCenters
     }
 
@@ -189,7 +192,6 @@ console.log("dropped");
       for(let i=0; i<3; i++){
         let element = document.getElementById(timeline[i].id)
         let left =  element.getBoundingClientRect().left - 96
-        console.log(left);
 
         let point = $("<div>")
         $(point).css({'height':'0px','width':'0px', 'border': '2px solid black', 'position': 'absolute'})
@@ -197,40 +199,21 @@ console.log("dropped");
         point.appendTo("#timeContainer")
       }
 
-        //
-        //
-        //   let firstPoint = $("#clone5")
-        //   // let offset = firstPoint[0].offset()
-        //   console.log(firstPoint[0].getBoundingClientRect());
-        //   let left = firstPoint[0].getBoundingClientRect().left -23
-        // let point = $("<div>")
-        // $(point).css({'height':'1px','width':'1px', 'border': '1px solid black', 'position': 'absolute'})
-        //
-        // point.css({"z-index": "3000", "top": '30px', "left": left})
-        // let element = document.getElementById(timeline[0].id)
-        //         // let cssClone = $(element).css()
-        // // console.log(cssClone);
-        // point.appendTo("#timeContainer")
-        //
-        // console.log($(point).css('visibility','hidden'));
-        // console.log( timeline[0].y, timeline[0].x );
-      // }
+
+
     }
 
     function getCenterOfClosest() {
         var idOfClosest = getClosest();
-        // console.log(idOfClosest, "id of closest");
-
         let dropDimensions = document.getElementById(idOfClosest.id);
         dropDimensions = dropDimensions.getBoundingClientRect()
-        // console.log(dropDimensions);
+
         let left = dropDimensions.left + 7
         let top = dropDimensions.top + 7
         let DropCenterOnTimeline = {
             x: left,
             y: top
         }
-        //TODO need to return drop center to use to getting the angle to rotate by
         return DropCenterOnTimeline
     }
 
@@ -250,31 +233,26 @@ console.log("dropped");
             var distance = {
                 dist: Math.sqrt(cSquared),
                 id: timelineCenters[i].id
-                // console.log(distance);
+
             }
             distances.push(distance)
         }
 
         var shortestDistance = 900000000000;
         var shortest;
-        // console.log(distances);
+
         for (let j = 0; j < distances.length; j++) {
             if (distances[j].dist < shortestDistance) {
                 shortestDistance = distances[j].dist
                 shortest = distances[j]
             }
         }
-        // if(distances[1].dist<distances[0].dist){
-        //   console.log("the second distance is less than the first");
-        // }
-        // console.log(shortestDistance);
-
         return shortest
     }
 
     function getDegreeToRotate(closetCenter, SVGCenter) {
 
-        // console.log(closetCenter, "closetCenter", SVGCenter, "grab center");
+
 
         var distanceOBJ = { //gets the x distance and y distance between what you dropped and where it should have landed
             x: Math.abs(closetCenter.x - SVGCenter.x),
@@ -285,7 +263,7 @@ console.log("dropped");
         distanceOBJ.y *= distanceOBJ.y
         var cSquared = distanceOBJ.x + distanceOBJ.y
         var hypotenus = Math.sqrt(cSquared) //pythagorean theroy to find the linear distance away
-        // console.log(hypotenus, "distance");
+
         var radianX = xDistance / hypotenus
         theDegree = Math.asin(radianX) * (180 / Math.PI)
 
@@ -293,7 +271,7 @@ console.log("dropped");
             theDegree = theDegree - 180
         } else if (SVGCenter.x > closetCenter.x && SVGCenter.y > closetCenter.y) {
             theDegree = 180 - theDegree;
-            // console.log("bottom right", theDegree);
+
         } else if (SVGCenter.x > closetCenter.x && SVGCenter.y < closetCenter.y) {
             // theDegree = 360 + Math.abs(theDegree);
             //bottom right
